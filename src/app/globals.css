@@ -1,15 +1,17 @@
 /* Original responsive stylesheet is served from public/build/reference.css. */
 @font-face { font-family:'CaptchaGeorgia'; src:url('/fonts/captcha-georgia-bold-italic.ttf') format('truetype'); font-weight:700; font-style:italic; font-display:block; }
 .recaptcha-bg { display:flex; align-items:center; justify-content:center; color:#080808; background-color:#7e7e7e; font:bold italic 24px Georgia,'Times New Roman',serif; letter-spacing:0; user-select:none; }
-.recaptcha-bg svg { display:block; width:100%; height:100%; }
-.errors { color:#ffb9ae; font-size:12px; line-height:1.4; padding-top:4px; }
-[role="button"], [data-action] { cursor:pointer; }
+.errors, .error { color:#ff2222; font-size:11px; line-height:1.2; text-align:center; width:100%; padding-top:3px; display:block; font-weight:500; }
+
 :focus-visible { outline:2px solid #f9d568; outline-offset:4px; }
-.demo-dialog { position:fixed; inset:0; margin:auto; width:min(90vw,440px); padding:28px; color:#f9e4a5; border:1px solid #b59040; border-radius:16px; background:linear-gradient(145deg,#30220b,#0c0b08); box-shadow:0 20px 80px #0009; }
-.demo-dialog::backdrop { background:#000b; }
-.demo-dialog h2 { font-size:23px; margin-bottom:14px; }
-.demo-dialog p { font-size:15px; line-height:1.7; }
-.demo-dialog button { display:block; margin:20px 0 0 auto; padding:9px 24px; border:1px solid #ddbc68; border-radius:8px; background:#7b5815; color:white; cursor:pointer; }
+#alertmodal { align-items:center; bottom:0; display:none; flex-direction:column; justify-content:center; left:0; position:fixed; right:0; top:0; z-index:2147483653; }
+#alertmodal.active { display:flex !important; }
+#alertmodal .alertmodal_box { background:#030303; border:1.5px solid #fea010; border-radius:10px; align-items:center; display:flex; flex-direction:column; justify-content:center; margin:0 auto; max-width:400px; padding:1.8rem 1.5rem; position:relative; width:92%; z-index:9; box-shadow:0 0 25px rgba(0,0,0,0.8); }
+#alertmodal .alertmodal_ttl { color:#ffc043; display:block; font-size:22px; font-weight:700; text-align:center; text-transform:uppercase; width:100%; letter-spacing:1px; line-height:1.2; text-shadow:0 0 12px rgba(254,160,16,0.35); }
+#alertmodal .alertmodal_des { color:#ff1a1a; text-align:center; line-height:1.5; font-size:15px; margin-top:14px; font-weight:500; }
+#alertmodal .alertmodal_box .closealert { cursor:pointer; height:32px; position:absolute; right:-10px; top:-14px; width:32px; z-index:9; }
+#alertmodal .alertmodal_box .closealert img { width:100%; height:100%; object-fit:contain; }
+#alertmodal .modal_backdrop { background:rgba(0,0,0,.8); bottom:0; left:0; position:absolute; right:0; top:0; z-index:1; }
 .missing-page { min-height:80vh; padding:20vh 20px; text-align:center; color:#f6d575; }
 .missing-page a { display:inline-block; margin-top:24px; color:#fff; text-decoration:underline; }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; scroll-behavior:auto!important; } }
