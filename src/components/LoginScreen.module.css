@@ -25,13 +25,8 @@
 .dialog input::placeholder{font:inherit;letter-spacing:inherit;color:#75716b!important;opacity:1}
 .username{top:82px}
 .password{top:177px}
-.hint{position:absolute;left:0;top:261px;width:100%;text-align:center;margin:0;color:#ffdb29;font:25px/32px LoginBold,sans-serif}
-.dialog .code{top:303px;width:238px;padding-left:15px}
-.captcha{position:absolute;left:389px;top:309px;width:183px;height:61px;background:#c99b65 url('/login/captcha-background.svg') center/100% 100% no-repeat;display:flex;align-items:center;justify-content:center;font:italic 43px Georgia,serif;overflow:hidden}
-.captcha span{display:inline-block}
-.stage .refresh{position:absolute;left:588px;top:321px;width:36px;height:37px}
-.refresh img{width:100%;height:100%}
-.stage .submit{position:absolute;top:394px;left:247px;width:206px;height:67px;background:url('/login/BT_dangnhap.png') center/100% 100%;display:grid;place-items:center}
+.phone{top:272px}
+.stage .submit{position:absolute;top:382px;left:247px;width:206px;height:67px;background:url('/login/BT_dangnhap.png') center/100% 100%;display:grid;place-items:center}
 .stage .submitRegister{background-image:url('/login/BT_dangky.png') !important}
 .stage .submit:disabled{opacity:0.6;filter:grayscale(0.4);cursor:not-allowed}
 .switchMode{position:absolute;bottom:14px;left:0;width:100%;text-align:center}
@@ -54,9 +49,8 @@
 
 
 /* Cocos SCALE button transition: zoomScale 1.05 in the reference scene. */
-.actions button,.side a,.submit,.close,.refresh{transition:transform 100ms ease-out;transform-origin:center;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.actions button,.side a,.submit,.close{transition:transform 100ms ease-out;transform-origin:center;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .actions button:active,.side a:active,.submit:active,.close:active{transform:scale(1.05)}
-.refresh:active{transform:scale(1.1)}
 .scrim{animation:backdropIn 180ms ease-out both}
 .dialog{transform:scale(var(--modal-scale));transform-origin:center;animation:modalIn 300ms ease-out both}
 .closing{animation:backdropOut 160ms ease-in both;pointer-events:none}

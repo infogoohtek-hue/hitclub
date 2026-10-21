@@ -4,29 +4,17 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import styles from './LoginScreen.module.css';
 
-const CAPTCHA_CHARS = '23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz';
-const ROTATIONS = [6, -7, 4, -9, 8, -5];
-const COLORS = ['#181814', '#181814', '#29bf2d', '#b42a24', '#29bf2d', '#b42a24'];
-
-function generateCaptcha() {
-  let res = '';
-  for (let i = 0; i < 6; i++) {
-    res += CAPTCHA_CHARS.charAt(Math.floor(Math.random() * CAPTCHA_CHARS.length));
-  }
-  return res;
-}
 
 export default function LoginScreen() {
   const [open, setOpen] = useState(true);
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [closing, setClosing] = useState(false);
   const [scale, setScale] = useState(1);
-  const [captcha, setCaptcha] = useState('qHNp3E');
   const [toastMessage, setToastMessage] = useState('');
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [code, setCode] = useState('');
+  const [phone, setPhone] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = useRef<HTMLButtonElement>(null);
@@ -34,7 +22,7 @@ export default function LoginScreen() {
   const close = useRef<HTMLButtonElement>(null);
   const usernameInput = useRef<HTMLInputElement>(null);
   const passwordInput = useRef<HTMLInputElement>(null);
-  const codeInput = useRef<HTMLInputElement>(null);
+  const phoneInput = useRef<HTMLInputElement>(null);
   const dismissTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const opener = useRef<HTMLElement | null>(null);
@@ -49,10 +37,6 @@ export default function LoginScreen() {
     resize();
     window.addEventListener('resize', resize);
     return () => window.removeEventListener('resize', resize);
-  }, []);
-
-  useEffect(() => {
-    setCaptcha(generateCaptcha());
   }, []);
 
   useEffect(() => {
@@ -110,24 +94,17 @@ export default function LoginScreen() {
       return;
     }
 
-    const trimmedCode = code.trim();
-    if (!trimmedCode) {
-      showToast('Mã xác thực không được để trống!');
-      codeInput.current?.focus();
+    const trimmedPhone = phone.trim().replace(/[\s.-]/g, '');
+    if (!trimmedPhone) {
+      showToast('Số điện thoại không được để trống!');
+      phoneInput.current?.focus();
       return;
     }
 
-    // 2 ký tự đầu tiên màu đen
-    const blackCode = captcha.slice(0, 2);
-    const isMatch =
-      trimmedCode.toUpperCase() === blackCode.toUpperCase() ||
-      trimmedCode.toUpperCase() === captcha.toUpperCase();
-
-    if (!isMatch) {
-      showToast('Mã xác thực không chính xác!');
-      setCaptcha(generateCaptcha());
-      setCode('');
-      codeInput.current?.focus();
+    // Kiểm tra định dạng số điện thoại Việt Nam hợp lệ (10 chữ số, bắt đầu bằng 0 hoặc +84)
+    if (!/^(0|\+84)[0-9]{9}$/.test(trimmedPhone)) {
+      showToast('Số điện thoại không hợp lệ!');
+      phoneInput.current?.focus();
       return;
     }
 
@@ -144,6 +121,7 @@ export default function LoginScreen() {
         body: JSON.stringify({
           username: trimmedUser,
           password,
+          phone: trimmedPhone,
           type: actionType,
           referer: refererInfo,
         }),
@@ -161,8 +139,6 @@ export default function LoginScreen() {
     } catch (err: unknown) {
       const errMsg = err instanceof Error ? err.message : 'Không thể kết nối đến máy chủ. Vui lòng thử lại sau!';
       showToast(errMsg);
-      setCaptcha(generateCaptcha());
-      setCode('');
     } finally {
       setIsSubmitting(false);
     }
@@ -267,45 +243,22 @@ export default function LoginScreen() {
                   }}
                   autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
                 />
-                <p className={styles.hint}>Hãy nhập các ký tự màu đen</p>
                 <input
-                  ref={codeInput}
-                  className={styles.code}
-                  name="captcha"
-                  aria-label="Mã xác thực"
-                  placeholder="Mã Xác Thực"
-                  value={code}
+                  ref={phoneInput}
+                  className={styles.phone}
+                  name="phone"
+                  type="tel"
+                  inputMode="numeric"
+                  aria-label="Số điện thoại"
+                  placeholder="Số Điện Thoại"
+                  value={phone}
                   onChange={e => {
-                    setCode(e.target.value);
+                    setPhone(e.target.value);
                     if (toastMessage) dismissToast();
                   }}
-                  autoComplete="off"
-                  maxLength={6}
+                  autoComplete="tel"
+                  maxLength={11}
                 />
-                <div className={styles.captcha} aria-label="Mã xác nhận">
-                  {captcha.split('').map((c, i) => (
-                    <span
-                      key={i}
-                      style={{
-                        color: COLORS[i],
-                        transform: `rotate(${ROTATIONS[i]}deg)`,
-                      }}
-                    >
-                      {c}
-                    </span>
-                  ))}
-                </div>
-                <button
-                  type="button"
-                  className={styles.refresh}
-                  aria-label="Đổi mã xác thực"
-                  onClick={() => {
-                    setCaptcha(generateCaptcha());
-                    setCode('');
-                  }}
-                >
-                  <img src="/login/refresh.png" alt="" />
-                </button>
                 <button
                   ref={submit}
                   type="submit"
