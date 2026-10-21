@@ -6,4 +6,3 @@ out/
 .env*.local
 .reference/
 reference.html
-reference.css
