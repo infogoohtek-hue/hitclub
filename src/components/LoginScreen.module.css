@@ -1,0 +1,68 @@
+@font-face{font-family:LoginBold;src:url('/login/MyriadPro-Bold.ttf')}
+@font-face{font-family:LoginRegular;src:url('/login/SourceSansPro-Regular.ttf')}
+
+.page{position:fixed;inset:0;overflow:hidden;background:#000;color:#f7df8b;font-family:LoginRegular,Arial,sans-serif}
+.stage{position:absolute;width:1280px;height:720px;top:50%;left:50%;transform-origin:center;background:url('/login/backdrop.jpg') center center/1313px 985px no-repeat}
+.scene{position:absolute;inset:0}
+.stage button{cursor:pointer;border:0;padding:0;background-color:transparent}
+.stage button:focus-visible,.stage a:focus-visible{outline:2px solid #fff2ad;outline-offset:4px}
+.actions{position:absolute;top:471px;left:457px;display:flex;gap:28px}
+.actions button{width:169px;height:57px;background-size:100% 100%;display:grid;place-items:center}
+.register{background-image:url('/login/BT_dangky.png')}
+.login{background-image:url('/login/BT_dangnhap.png')}
+
+.side{position:absolute;right:-6px;top:235px;display:grid;gap:2px}
+.side a{display:block;width:105px;height:121px}
+.side img{width:100%;height:100%}
+.caption{position:absolute;top:552px;left:0;width:100%;text-align:center;font:20px/30px Arial,sans-serif;margin:0;color:#ddca83}
+.caption strong{text-decoration:underline}
+.version{position:absolute;left:21px;bottom:90px;font:22px LoginBold,sans-serif;letter-spacing:2px}
+.scrim{position:absolute;inset:0;background:#0009;display:flex;align-items:center;justify-content:center}
+.dialog{--modal-scale:1.1;position:relative;width:700px;height:520px;margin-top:45px;background:url('/images/bg-form.png') center/100% 100% no-repeat}
+.dialog h1{position:absolute;top:19px;left:150px;width:400px;margin:0;text-align:center;font:36px/45px LoginBold,sans-serif;color:#fff08b;text-shadow:0 2px 1px #684400}
+.stage .close{position:absolute;right:2px;top:0;width:97px;height:53px;border-radius:0 28px 0 50px;background:linear-gradient(#710000,#350000);border:2px solid #af843d;color:#fff99d;font:70px/48px Arial,sans-serif;font-weight:900}
+.dialog input{position:absolute;left:129px;width:442px;height:69px;box-sizing:border-box;border:1px solid #bcad72;border-radius:9px;background:#16120bc9;color:#fff;font:32px LoginBold,sans-serif;padding:0 19px;box-shadow:0 0 3px #c2ae5960;outline-offset:3px}
+.dialog input::placeholder{font:inherit;letter-spacing:inherit;color:#75716b!important;opacity:1}
+.username{top:82px}
+.password{top:177px}
+.hint{position:absolute;left:0;top:261px;width:100%;text-align:center;margin:0;color:#ffdb29;font:25px/32px LoginBold,sans-serif}
+.dialog .code{top:303px;width:238px;padding-left:15px}
+.captcha{position:absolute;left:389px;top:309px;width:183px;height:61px;background:#c99b65 url('/login/captcha-background.svg') center/100% 100% no-repeat;display:flex;align-items:center;justify-content:center;font:italic 43px Georgia,serif;overflow:hidden}
+.captcha span{display:inline-block}
+.stage .refresh{position:absolute;left:588px;top:321px;width:36px;height:37px}
+.refresh img{width:100%;height:100%}
+.stage .submit{position:absolute;top:394px;left:247px;width:206px;height:67px;background:url('/login/BT_dangnhap.png') center/100% 100%;display:grid;place-items:center}
+.stage .submitRegister{background-image:url('/login/BT_dangky.png') !important}
+.stage .submit:disabled{opacity:0.6;filter:grayscale(0.4);cursor:not-allowed}
+.switchMode{position:absolute;bottom:14px;left:0;width:100%;text-align:center}
+.stage .switchMode button{color:#ffea9f;font:16px LoginBold,sans-serif;text-decoration:underline;text-shadow:0 1px 2px #000;cursor:pointer;padding:4px 10px}
+.stage .switchMode button:hover{color:#ffffff}
+.toastBanner{position:absolute;top:41px;left:15px;right:15px;height:47px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:0 24px;z-index:25;cursor:pointer;user-select:none;background:linear-gradient(90deg, transparent 0%, rgba(20, 13, 6, 0.85) 6%, rgba(14, 9, 4, 0.98) 15%, rgba(12, 7, 3, 0.98) 50%, rgba(14, 9, 4, 0.98) 85%, rgba(20, 13, 6, 0.85) 94%, transparent 100%);filter:drop-shadow(0 6px 14px rgba(0, 0, 0, 0.95)) drop-shadow(0 -3px 8px rgba(0, 0, 0, 0.85));animation:toastIn 180ms cubic-bezier(0.16, 1, 0.3, 1) both}
+.toastBanner::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg, transparent 0%, rgba(180, 135, 45, 0.2) 5%, #b88d2d 15%, #f3ca56 35%, #ffea88 50%, #f3ca56 65%, #b88d2d 85%, rgba(180, 135, 45, 0.2) 95%, transparent 100%);box-shadow:0 0 8px rgba(243, 202, 86, 0.5)}
+.toastBanner::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg, transparent 0%, rgba(130, 92, 28, 0.2) 5%, #825c1c 15%, #b6872b 35%, #dfb248 50%, #b6872b 65%, #825c1c 85%, rgba(130, 92, 28, 0.2) 95%, transparent 100%)}
+.toastText{color:#ffde62;font:bold 22px / 1.2 Arial, 'MyriadPro-Bold', sans-serif;letter-spacing:0.3px;text-align:center;text-shadow:0 2px 0 #000, 0 3px 2px rgba(0, 0, 0, 0.9), 1px 0 0 #000, -1px 0 0 #000, 0 -1px 0 #000, 0 0 6px rgba(0, 0, 0, 0.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@keyframes toastIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.disclosure{position:fixed;bottom:0;left:0;right:0;text-align:center;padding:5px 12px;background:#090909e8;color:#bba874;font:11px/16px Arial,sans-serif}
+.disclosure a{color:#ebd996;margin-left:15px;text-decoration:underline}
+@media(max-width:600px) and (orientation:portrait){.disclosure{font-size:10px}
+}
+
+
+
+.stage .close{background:none;border:0;border-radius:0;width:96px;height:50px;right:2px;top:0}
+.close img{display:block;width:100%;height:100%}
+
+
+/* Cocos SCALE button transition: zoomScale 1.05 in the reference scene. */
+.actions button,.side a,.submit,.close,.refresh{transition:transform 100ms ease-out;transform-origin:center;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.actions button:active,.side a:active,.submit:active,.close:active{transform:scale(1.05)}
+.refresh:active{transform:scale(1.1)}
+.scrim{animation:backdropIn 180ms ease-out both}
+.dialog{transform:scale(var(--modal-scale));transform-origin:center;animation:modalIn 300ms ease-out both}
+.closing{animation:backdropOut 160ms ease-in both;pointer-events:none}
+.closing .dialog{animation:modalOut 160ms ease-in both}
+@keyframes backdropIn{from{background-color:#0000}to{background-color:#0009}}
+@keyframes backdropOut{from{background-color:#0009}to{background-color:#0000}}
+@keyframes modalIn{0%{transform:scale(calc(var(--modal-scale) * .7));opacity:0}65%{transform:scale(calc(var(--modal-scale) * 1.055));opacity:1}100%{transform:scale(var(--modal-scale));opacity:1}}
+@keyframes modalOut{from{transform:scale(var(--modal-scale));opacity:1}to{transform:scale(calc(var(--modal-scale) * .9));opacity:0}}
+@media(prefers-reduced-motion:reduce){.scrim,.dialog,.toastBanner,.closing,.closing .dialog{animation:none}.actions button,.side a,.submit,.close,.refresh{transition:none}.actions button:active,.side a:active,.submit:active,.close:active,.refresh:active{transform:none}}

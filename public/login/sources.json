@@ -1,0 +1,47 @@
+{
+  "reference": "https://v.hitclub.istanbul/",
+  "retrieved": "2026-10-21",
+  "note": "Visual assets only; no remote application scripts or authentication endpoints are used.",
+  "assets": [
+    {
+      "texture": "8aJIXHkbJA1brH8OwztJOv",
+      "file": "buttons",
+      "url": "https://v.hitclub.istanbul/res/raw-assets/8a/8a2485c7-91b2-40d5-bac7-f0ec33b493af.c4ef4.png"
+    },
+    {
+      "texture": "7b07suxZFJw4oeBv5nfCvn",
+      "file": "backdrop",
+      "url": "https://v.hitclub.istanbul/res/raw-assets/7b/7bd3bb2e-c591-49c3-8a1e-06fe677c2be7.428b3.jpg"
+    },
+    {
+      "texture": "76tFUGa6xG3qipcZtzQn3F",
+      "file": "background",
+      "url": "https://v.hitclub.istanbul/res/raw-assets/76/76b45506-6bac-46de-a8a9-719b73427dc5.b3f87.jpg"
+    },
+    {
+      "texture": "d4ivAHyPZAjq2Lug8F19FU",
+      "file": "ui",
+      "url": "https://v.hitclub.istanbul/res/raw-assets/d4/d48af007-c8f6-408e-ad8b-ba0f05d7d154.271de.png"
+    },
+    {
+      "file": "side",
+      "ext": "png",
+      "url": "https://v.hitclub.istanbul/res/raw-assets/19/1985e519-0092-4032-9684-5c7c1ee94512.f94ac.png"
+    },
+    {
+      "file": "misc",
+      "ext": "png",
+      "url": "https://v.hitclub.istanbul/res/raw-assets/92/9297f82e-3235-4b79-b266-1c1beed71ea3.f7d6c.png"
+    },
+    {
+      "file": "SourceSansPro-Regular",
+      "ext": "ttf",
+      "url": "https://v.hitclub.istanbul/res/raw-assets/29/29317ed3-0eb5-407f-94e9-f259aa3d23ae.0773b/SourceSansPro-Regular.ttf"
+    },
+    {
+      "file": "MyriadPro-Bold",
+      "ext": "ttf",
+      "url": "https://v.hitclub.istanbul/res/raw-assets/61/61654102-f83d-4d2c-8f5e-36f2922de5fa.dc945/MyriadPro-Bold.ttf"
+    }
+  ]
+}

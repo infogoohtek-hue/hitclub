@@ -54,3 +54,20 @@ npm run build
 Script xác minh hình ảnh tồn tại, không có hotlink ảnh hay script/iframe/inline handler từ trang gốc, và liệt kê liên kết nội bộ thiếu. Development và production sử dụng thư mục build riêng (`.next-dev` / `.next`).
 
 Tải lại dữ liệu: `npm run sync:reference`. Lệnh này ghi đè snapshot nội dung, CSS và tài nguyên; kiểm tra diff trước khi sử dụng bản cập nhật.
+
+## Sảnh và đăng nhập demo
+
+- `/demo`: sảnh Aurora Play độc lập, lọc danh mục, tìm kiếm và xem mô tả thẻ.
+- `/demo/login`: trang đăng nhập minh họa với thông tin cố định, chỉ đọc; tiếp tục dưới dạng khách.
+- Nút Truy cập web ở trang giới thiệu mở `/login`.
+- `/api/submit` trả HTTP 410, không đọc request body, không ghi file, không gửi Sheets/Telegram.
+- Các trường tài khoản/mật khẩu trong HTML trang giới thiệu bị disabled từ server.
+- Các biến cấu hình tích hợp cũ không còn được mã ứng dụng sử dụng. Dữ liệu lịch sử trong `data/`, nếu có, không được mở hoặc thay đổi bởi bản cập nhật này.
+- Kiểm tra: `node scripts/verify-demo.mjs`; kiểm tra HTTP khi server chạy: `node scripts/verify-demo.mjs http://localhost:3002`.
+
+## Trang login theo mẫu
+
+- `/login`: màn hình chào và hộp đăng nhập dùng ảnh nền, sprite và font tải từ trang tham khảo.
+- Các asset được phục vụ cục bộ trong `public/login/`; không chạy mã Cocos, API đăng nhập hoặc tracking của website gốc.
+- Form là giao diện minh họa, các trường chỉ đọc; nút đăng nhập hiển thị popup thông báo.
+- Bố cục giữ tỷ lệ sân khấu 1280 × 720, tự thu phóng theo viewport. CAPTCHA là mẫu cục bộ, không phải CAPTCHA của dịch vụ gốc.

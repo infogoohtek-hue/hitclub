@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="276" height="92" viewBox="0 0 276 92">
+  <defs>
+    <pattern id="grid" width="9" height="9" patternUnits="userSpaceOnUse">
+      <path d="M0 0H9V9" fill="none" stroke="#c5c5b8" stroke-width="1.5"/>
+    </pattern>
+  </defs>
+  <path fill="#fffdf2" d="M0 0h276v92H0z"/>
+  <path fill="#c99b65" d="M0 0h47l8 5 14-1 9 5 49 1 2-7 17 1 5-4h106l12 5 7-1-4 34-2 8 6 1v34l-13-1-4 12h-29l-8-5-21-2-4-6-14 4-20 5-31 1-6 3H91l-17-5-17 2-23-4-15-8-19 1z"/>
+  <path fill="url(#grid)" d="m32 12 37 9-5 17-14-5-8 36-25-7zM118 25l24 5 5 60-16 2-7-47-14-3zM218 7l39 13-7 19-22-8-9 43-18-4z"/>
+  <g fill="none" stroke="#a8b4aa" stroke-width="1.4">
+    <path d="m0 36 24 2 16 8 29 1 18 9 36-1 19-5 23-3 30-8 24 5 19 5 22 3"/>
+    <path d="m4 40 31 4 22 8 32 4 22 6 31-6 25-3 27-7 26 5 29 5 18 5"/>
+    <path d="m53 4 4 13 8 4 4 14M82 48l10 12 3 17 13 11M166 72l18 7 15 1 12 8" stroke="#dbd3b5" stroke-dasharray="3 3"/>
+  </g>
+</svg>

