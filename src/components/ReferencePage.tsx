@@ -20,9 +20,10 @@ export default function ReferencePage({ html }: { html: string }) {
     const initialCaptcha = host.querySelector('.recaptcha-bg');
     if (initialCaptcha) initialCaptcha.innerHTML = captchaMarkup(captcha);
     const slider = host.querySelector<HTMLElement>('#sliderbanner');
+    const multi = !!slider && slider.querySelectorAll('.swiper-slide').length > 1;
     const swiper = slider ? new Swiper(slider, {
-      modules: [Autoplay, Pagination], slidesPerView: 1, loop: true,
-      autoplay: { delay: 2500, disableOnInteraction: false },
+      modules: [Autoplay, Pagination], slidesPerView: 1, loop: multi,
+      autoplay: multi ? { delay: 2500, disableOnInteraction: false } : false,
       pagination: { el: slider.querySelector<HTMLElement>('.swiper-pagination'), clickable: true },
     }) : null;
     const closeForm = () => {
