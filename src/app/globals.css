@@ -17,3 +17,45 @@
 .missing-page { min-height:80vh; padding:20vh 20px; text-align:center; color:#f6d575; }
 .missing-page a { display:inline-block; margin-top:24px; color:#fff; text-decoration:underline; }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; scroll-behavior:auto!important; } }
+
+/* Banner 2 text fix (prevent overflow / wrapping into 2 lines on green card) */
+.banner_lbl {
+  white-space: nowrap !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.25px !important;
+  bottom: 21% !important;
+  left: 17.5% !important;
+  right: 11% !important;
+  height: 8.5% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  line-height: 1 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.banner_lbl span {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: inline-block !important;
+  max-width: 100% !important;
+}
+
+@media (min-width: 1400px) {
+  .banner_lbl {
+    font-size: 12px !important;
+    letter-spacing: -0.2px !important;
+    bottom: 21% !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  .banner_lbl {
+    font-size: 10px !important;
+    letter-spacing: -0.3px !important;
+    bottom: 21% !important;
+  }
+}

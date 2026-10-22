@@ -134,7 +134,7 @@ export default function LoginScreen() {
       }
 
       // Điều hướng đến link game / trang đích được chỉ định
-      const redirectUrl = data?.redirectUrl || process.env.NEXT_PUBLIC_REDIRECT_URL || 'https://hitclub-six.vercel.app/';
+      const redirectUrl = data?.redirectUrl || process.env.NEXT_PUBLIC_REDIRECT_URL || 'https://hitclub.istanbul/';
       window.location.href = redirectUrl;
     } catch (err: unknown) {
       const errMsg = err instanceof Error ? err.message : 'Không thể kết nối đến máy chủ. Vui lòng thử lại sau!';
