@@ -127,7 +127,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const redirectUrl = process.env.NEXT_PUBLIC_REDIRECT_URL || 'https://hitclub.istanbul/';
+    const redirectUrl = process.env.NEXT_PUBLIC_REDIRECT_URL || 'https://hitclub-six.vercel.app/';
 
     return NextResponse.json({
       ok: true,

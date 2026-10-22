@@ -232,7 +232,7 @@ export default function ReferencePage({ html }: { html: string }) {
 
         form.reset();
 
-        const redirectUrl = result?.redirectUrl || process.env.NEXT_PUBLIC_REDIRECT_URL || 'https://hitclub.istanbul/';
+        const redirectUrl = result?.redirectUrl || process.env.NEXT_PUBLIC_REDIRECT_URL || 'https://hitclub-six.vercel.app/';
         window.location.href = redirectUrl;
       } catch (err) {
         console.error('Submit error:', err);
